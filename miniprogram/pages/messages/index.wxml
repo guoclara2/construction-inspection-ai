@@ -1,0 +1,23 @@
+<view class="page-wrap">
+  <!-- 顶部操作条：全部已读 -->
+  <view class="top-bar">
+    <view class="top-title">消息通知</view>
+    <view class="read-all-btn {{marking ? 'read-all-disabled' : ''}}" bindtap="markAllRead">
+      {{marking ? '处理中…' : '全部已读'}}</view>
+  </view>
+
+  <!-- 消息列表：未读左上角蓝点 -->
+  <view wx:for="{{messages}}" wx:key="id" class="card msg-card {{item.unread ? 'msg-unread' : ''}}"
+    data-id="{{item.id}}" bindtap="onItemTap">
+    <view class="msg-dot {{item.unread ? 'msg-dot-on' : ''}}"></view>
+    <view class="msg-title-row">
+      <view class="msg-title">{{item.title}}<text wx:if="{{item.stale}}" class="msg-stale">（已处理）</text></view>
+      <view class="msg-time muted">{{item.time}}</view>
+    </view>
+    <view class="msg-content muted">{{item.content}}</view>
+    <view wx:if="{{item.pushed}}" class="msg-channel muted">已推送微信</view>
+  </view>
+
+  <view wx:if="{{!loading && !messages.length}}" class="empty">暂无数据</view>
+  <view wx:if="{{noMore && messages.length}}" class="muted list-end">已加载全部</view>
+</view>

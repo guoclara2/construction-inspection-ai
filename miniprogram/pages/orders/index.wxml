@@ -1,0 +1,41 @@
+<view class="page-wrap">
+  <!-- 角色自适应 tab（inspector 双 tab / rectifier 单 tab / admin 单 tab） -->
+  <view wx:if="{{tabs.length > 1}}" class="tab-bar">
+    <view
+      wx:for="{{tabs}}"
+      wx:key="view"
+      class="tab {{activeView === item.view ? 'tab-active' : ''}}"
+      data-view="{{item.view}}"
+      bindtap="onTabTap"
+    >{{item.label}}</view>
+  </view>
+
+  <!-- 状态筛选 chips -->
+  <view class="filter-bar">
+    <view
+      wx:for="{{statusFilters}}"
+      wx:key="value"
+      class="chip {{activeStatus === item.value ? 'chip-active' : ''}}"
+      data-value="{{item.value}}"
+      bindtap="onStatusTap"
+    >{{item.label}}</view>
+  </view>
+
+  <!-- 工单卡片 -->
+  <view wx:for="{{orders}}" wx:key="id" class="card order-card" data-id="{{item.id}}" bindtap="goDetail">
+    <view class="order-head">
+      <view class="order-no">{{item.order_no}}</view>
+      <view class="order-status" style="color: {{item.statusColor}};">{{item.statusLabel}}</view>
+    </view>
+    <view class="order-item">{{item.item_name}}</view>
+    <view class="order-meta">
+      <view wx:if="{{item.roundLabel}}" class="tag tag-warn">{{item.roundLabel}}</view>
+      <view wx:if="{{item.overdue}}" class="tag tag-danger">已超期</view>
+      <view class="order-counterpart muted">{{item.counterpartLabel}}：{{item.counterpartName}}</view>
+    </view>
+    <view class="order-foot muted">{{item.time}}</view>
+  </view>
+
+  <view wx:if="{{!loading && !orders.length}}" class="empty">暂无数据</view>
+  <view wx:if="{{noMore && orders.length}}" class="muted list-end">已加载全部</view>
+</view>

@@ -1,0 +1,31 @@
+<view class="login-wrap">
+  <view class="hero">
+    <view class="hero-title">工程现场智能巡查助手</view>
+    <view class="hero-sub">拍照上传 · AI 判别 · 一键生成整改工单，巡查整改全流程闭环</view>
+  </view>
+
+  <button class="btn-primary wx-btn" disabled="{{wxLogging}}" bindtap="onWxLogin">
+    {{wxLogging ? '微信登录中…' : '微信一键登录'}}</button>
+  <button class="btn-ghost wx-btn" bindtap="onPhoneLogin">手机号验证码登录</button>
+
+  <!-- 测试账号仅在开发环境渲染（含真机调试） -->
+  <view wx:if="{{isDev}}" class="card">
+    <view class="dev-tip">开发模式：点击测试账号直接登录</view>
+    <view wx:if="{{accountsError}}" class="dev-error">{{accountsError}}</view>
+    <view
+      wx:for="{{accounts}}"
+      wx:key="user_id"
+      class="account-item"
+      data-id="{{item.user_id}}"
+      bindtap="onAccountTap"
+    >
+      <view class="account-info">
+        <view class="account-name">{{item.name}}</view>
+        <view class="muted account-sub">{{item.roleLabel}} · {{item.specialtyLabel}}</view>
+      </view>
+      <view class="tag tag-primary">{{item.roleLabel}}</view>
+    </view>
+    <view wx:if="{{loading}}" class="empty">加载中…</view>
+    <view wx:if="{{!loading && !accounts.length && !accountsError}}" class="empty">暂无数据</view>
+  </view>
+</view>

@@ -1,0 +1,123 @@
+/* 智能问询页样式：chips 选择器 + 聊天气泡布局 */
+.page-wrap {
+  padding: 24rpx 24rpx 40rpx;
+}
+
+.group-label {
+  font-size: 26rpx;
+  color: #5B6B7D;
+  margin: 16rpx 0 12rpx;
+}
+.group-label:first-child {
+  margin-top: 0;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+}
+
+.ask-input {
+  width: auto;
+  margin-top: 24rpx;
+  padding: 20rpx;
+  background: #F5F7FA;
+  border-radius: 12rpx;
+  font-size: 26rpx;
+  min-height: 60rpx;
+  box-sizing: border-box;
+}
+.ask-placeholder {
+  color: #9AA7B5;
+}
+
+.submit-btn {
+  margin-top: 24rpx;
+}
+.submit-btn[disabled] {
+  background: #C6D3E8;
+  color: #ffffff;
+}
+
+.chat {
+  margin-top: 20rpx;
+}
+
+.bubble {
+  border-radius: 12rpx;
+  padding: 20rpx 24rpx;
+  margin-bottom: 20rpx;
+  font-size: 26rpx;
+}
+.bubble-user {
+  background: #1E5FD0;
+  color: #ffffff;
+  margin-left: 80rpx;
+  border-bottom-right-radius: 4rpx;
+}
+.bubble-system {
+  background: #ffffff;
+  margin-right: 40rpx;
+  border-bottom-left-radius: 4rpx;
+}
+
+.loading-text {
+  font-size: 26rpx;
+}
+
+.rec-card {
+  border: 1rpx solid #EEF1F5;
+  border-radius: 12rpx;
+  padding: 20rpx;
+  margin-bottom: 16rpx;
+}
+.rec-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16rpx;
+}
+.rec-name {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #1A2634;
+  flex: 1;
+}
+.rec-points {
+  margin-top: 12rpx;
+}
+.rec-point {
+  font-size: 24rpx;
+  color: #1A2634;
+  line-height: 1.7;
+}
+.rec-basis {
+  margin-top: 10rpx;
+  font-size: 22rpx;
+  color: #5B6B7D;
+}
+.rec-reason {
+  margin-top: 8rpx;
+  font-size: 22rpx;
+}
+
+.btn-sm {
+  margin-top: 16rpx;
+  background: rgba(30, 95, 208, 0.08);
+  color: #1E5FD0;
+  font-size: 26rpx;
+  border-radius: 8rpx;
+  padding: 8rpx 0;
+  line-height: 1.8;
+}
+.btn-sm::after {
+  border: none;
+}
+
+.rec-footer {
+  font-size: 22rpx;
+  color: #5B6B7D;
+  text-align: center;
+  padding: 8rpx 0 4rpx;
+}

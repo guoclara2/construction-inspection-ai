@@ -1,0 +1,68 @@
+{
+  "pages": [
+    "pages/login/index",
+    "pages/wx-bind/index",
+    "pages/change-password/index",
+    "pages/project-select/index",
+    "pages/inspect/index",
+    "pages/orders/index",
+    "pages/messages/index",
+    "pages/mine/index",
+    "pages/order-detail/index",
+    "pages/record-detail/index",
+    "pages/inspect/inquiry",
+    "pages/inspect/form",
+    "pages/inspect/records",
+    "pages/inspect/tasks"
+  ],
+  "window": {
+    "navigationBarTitleText": "智能巡查助手",
+    "navigationBarBackgroundColor": "#FFFFFF",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#F5F7FA"
+  },
+  "tabBar": {
+    "custom": true,
+    "color": "#5B6B7D",
+    "selectedColor": "#1E5FD0",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/inspect/index",
+        "text": "智能巡查",
+        "iconPath": "images/tabbar/inspect.png",
+        "selectedIconPath": "images/tabbar/inspect-active.png"
+      },
+      {
+        "pagePath": "pages/orders/index",
+        "text": "工单中心",
+        "iconPath": "images/tabbar/orders.png",
+        "selectedIconPath": "images/tabbar/orders-active.png"
+      },
+      {
+        "pagePath": "pages/messages/index",
+        "text": "消息中心",
+        "iconPath": "images/tabbar/messages.png",
+        "selectedIconPath": "images/tabbar/messages-active.png"
+      },
+      {
+        "pagePath": "pages/mine/index",
+        "text": "我的",
+        "iconPath": "images/tabbar/mine.png",
+        "selectedIconPath": "images/tabbar/mine-active.png"
+      }
+    ]
+  },
+  "lazyCodeLoading": "requiredComponents",
+  "permission": {
+    "scope.userLocation": {
+      "desc": "用于现场照片的拍摄定位存证"
+    }
+  },
+  "requiredPrivateInfos": [
+    "getLocation"
+  ],
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

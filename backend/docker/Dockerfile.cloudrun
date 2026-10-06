@@ -1,0 +1,39 @@
+# 微信云托管部署镜像（单服务形态：后端 API + admin-web 静态托管）。
+# 与 docker/Dockerfile 的差异：
+#   1. COPY web ./web —— 打包脚本已把 admin-web 构建产物放入 web/（WEB_DIST_DIR=web/dist）；
+#   2. 监听端口默认 8080（云托管版本配置的监听端口须与之一致，默认即 80）。
+# 使用：scripts/package-cloudrun.ps1 会把本文件改名为 Dockerfile 放入代码包根目录。
+FROM python:3.12-slim AS builder
+WORKDIR /app
+COPY requirements.txt constraints.txt .
+RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
+
+FROM python:3.12-slim
+WORKDIR /app
+
+# 运行期系统依赖（Pillow/psycopg 运行库）
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libpq5 libjpeg62-turbo zlib1g \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY --from=builder /install /usr/local
+COPY app ./app
+COPY migrations ./migrations
+COPY scripts/bootstrap_admin.py scripts/evaluate_ai.py scripts/backup_restore.py ./scripts/
+COPY alembic.ini ./
+COPY docker/entrypoint.sh ./docker/entrypoint.sh
+COPY web ./web
+RUN chmod +x ./docker/entrypoint.sh
+
+# 非 root 用户运行，降低容器逃逸风险
+RUN useradd -m appuser \
+    && mkdir -p /app/storage /app/uploads /app/data \
+    && chown -R appuser:appuser /app
+USER appuser
+
+ENV APP_ENV=prod \
+    PYTHONUNBUFFERED=1 \
+    PORT=8080
+
+EXPOSE 8080
+ENTRYPOINT ["./docker/entrypoint.sh"]

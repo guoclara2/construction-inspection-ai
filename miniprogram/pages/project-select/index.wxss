@@ -1,0 +1,62 @@
+.page {
+  min-height: 100vh;
+  background: #f5f6f8;
+  padding: 32rpx 24rpx;
+  box-sizing: border-box;
+}
+.header {
+  margin: 24rpx 8rpx 32rpx;
+}
+.title {
+  font-size: 40rpx;
+  font-weight: 700;
+  color: #1a2634;
+}
+.sub {
+  font-size: 26rpx;
+  color: #8a97a6;
+  margin-top: 8rpx;
+}
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 28rpx 24rpx;
+  margin-bottom: 20rpx;
+  border: 2rpx solid transparent;
+}
+.item.active {
+  border-color: #1e5fd0;
+}
+.name {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #1a2634;
+}
+.meta {
+  margin-top: 8rpx;
+  font-size: 24rpx;
+  color: #8a97a6;
+}
+.meta .code {
+  margin-right: 16rpx;
+}
+.roles {
+  margin-top: 12rpx;
+}
+.role-tag {
+  display: inline-block;
+  font-size: 22rpx;
+  color: #1e5fd0;
+  background: #eaf1fd;
+  border-radius: 8rpx;
+  padding: 4rpx 12rpx;
+  margin-right: 12rpx;
+}
+.cur {
+  font-size: 24rpx;
+  color: #1e5fd0;
+  font-weight: 600;
+}

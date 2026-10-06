@@ -1,0 +1,22 @@
+<view class="login-wrap">
+  <view class="hero">
+    <view class="hero-title">修改密码</view>
+    <view class="hero-sub">为保障账号安全，请将初始密码修改为仅你本人知晓的强密码</view>
+  </view>
+
+  <view class="card">
+    <view class="form-item">
+      <text class="form-label">原密码 / 初始密码</text>
+      <input class="form-input" password placeholder="请输入原密码" value="{{oldPwd}}" bindinput="onOld" />
+    </view>
+    <view class="form-item">
+      <text class="form-label">新密码</text>
+      <input class="form-input" password placeholder="≥10 位，含大小写/数字/符号至少三类" value="{{newPwd}}" bindinput="onNew" />
+    </view>
+    <view class="form-item">
+      <text class="form-label">确认新密码</text>
+      <input class="form-input" password placeholder="再次输入新密码" value="{{confirmPwd}}" bindinput="onConfirm" />
+    </view>
+    <button class="btn-primary" loading="{{submitting}}" bindtap="submit">确认修改</button>
+  </view>
+</view>

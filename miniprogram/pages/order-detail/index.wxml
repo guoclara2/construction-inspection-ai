@@ -1,0 +1,217 @@
+<view wx:if="{{loading && !order}}" class="empty">
+  <view class="card" wx:if="{{order}}">
+    <view class="section-label">历轮完整整改与审核</view>
+    <view wx:for="{{rounds}}" wx:key="round">
+      <view>第 {{item.round}} 轮 · {{item.result || '待审核'}}</view>
+      <view>{{item.text}}</view><view>{{item.submitted_at}} · 提交人 {{item.submitter_id}}</view>
+      <view>审核 {{item.reviewer_id}} · {{item.reviewed_at}} · {{item.comment}}</view>
+      <image wx:for="{{item.photos}}" wx:for-item="photo" wx:key="id" src="{{photo.signedUrl}}" style="width:160rpx;height:120rpx" data-round="{{item.round}}" bindtap="previewRound" />
+    </view>
+    <view class="section-label">延期申请</view>
+    <view wx:for="{{extensions}}" wx:key="id">
+      <view>{{item.deadline}} · {{item.status}} · {{item.reason}} · {{item.comment}}</view>
+      <view wx:if="{{item.status === 'pending' && !isAssignee && (isInspector || isAdmin)}}">
+        <button data-id="{{item.id}}" data-approve="yes" bindtap="reviewExtension">批准延期</button>
+        <button data-id="{{item.id}}" data-approve="no" bindtap="reviewExtension">驳回申请</button>
+      </view>
+    </view>
+    <view wx:if="{{isAssignee && order.status !== 'closed' && order.status !== 'cancelled'}}">
+      <picker mode="date" value="{{extensionDate}}" bindchange="onExtensionDate">新截止日期（北京时间）：{{extensionDate || '请选择'}}</picker>
+      <textarea value="{{extensionReason}}" bindinput="onExtensionReason" maxlength="2000" placeholder="延期原因" />
+      <button bindtap="applyExtension">提交延期申请</button>
+    </view>
+  </view>
+加载中…</view>
+
+<view wx:if="{{order}}" class="page-wrap">
+  <!-- 头部：单号 + 状态 + 轮次 + 超期 -->
+  <view class="card head-card">
+    <view class="head-row">
+      <view class="head-no">{{order.order_no}}</view>
+      <view class="head-status" style="color: {{statusColor}};">{{statusLabel}}</view>
+    </view>
+    <view class="head-tags">
+      <view wx:if="{{roundLabel}}" class="tag tag-warn">{{roundLabel}}</view>
+      <view wx:if="{{overdueText}}" class="tag tag-danger">{{overdueText}}</view>
+    </view>
+    <view class="head-meta muted">
+      <view>发起人：{{order.inspector_name}}</view>
+      <view>责任人：{{order.assignee_name}}</view>
+      <view>创建时间：{{createdText}}</view>
+      <view class="deadline-line">整改时限：{{deadlineText}}</view>
+    </view>
+  </view>
+
+  <!-- 问题区：三段卡片 -->
+  <view class="card">
+    <view class="section-title">问题定位</view>
+    <view class="section-body">{{problem_location}}</view>
+  </view>
+  <view class="card">
+    <view class="section-title">整改要求</view>
+    <view class="section-body">{{rectify_requirement}}</view>
+  </view>
+  <view class="card">
+    <view class="section-title">规范依据</view>
+    <view class="section-body">{{basis}}</view>
+  </view>
+
+  <!-- 原始记录区 -->
+  <view class="card">
+    <view class="section-title">原始巡查记录</view>
+    <view class="record-line" data-id="{{record.id}}" bindtap="goRecord">
+      <view class="record-name">{{record.item_name}}</view>
+      <view class="record-tags">
+        <view class="tag tag-info">{{record.defectCategoryLabel}}</view>
+        <view wx:if="{{record.humanVerdictLabel}}" class="tag {{record.humanVerdictClass}}">{{record.humanVerdictLabel}}</view>
+      </view>
+      <image wx:if="{{photoFull}}" class="record-photo {{photoIssues.length ? 'photo-suspicious' : ''}}" src="{{photoFull}}" mode="aspectFill"
+        bindtap="previewPhoto" />
+      <!-- P1-4：存证异常橙色警示条 -->
+      <view wx:if="{{photoIssues.length}}" class="evidence-warn-bar">
+        <view class="warn-title">存证异常</view>
+        <view class="warn-items">{{photoIssues}}</view>
+      </view>
+      <view wx:if="{{photoMeta}}" class="evidence-line">
+        <text class="muted">拍摄：{{photoMeta.exifTime}}｜{{photoMeta.coord}}｜{{photoMeta.sourceLabel}}</text>
+      </view>
+      <view wx:if="{{aiLabel}}" class="ai-line">
+        <view class="ai-verdict" style="color: {{aiVerdictColor}};">{{aiLabel}}</view>
+        <view wx:if="{{aiDesc}}" class="ai-desc">{{aiDesc}}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 整改反馈区 -->
+  <view class="card">
+    <view class="section-title">整改反馈</view>
+    <block wx:if="{{feedbackPhotoFull || feedbackText}}">
+      <image wx:if="{{feedbackPhotoFull}}" class="record-photo {{feedbackIssues.length ? 'photo-suspicious' : ''}}"
+        src="{{feedbackPhotoFull}}" mode="aspectFill" bindtap="previewFeedbackPhoto" />
+      <!-- P1-4：存证异常橙色警示条 -->
+      <view wx:if="{{feedbackIssues.length}}" class="evidence-warn-bar">
+        <view class="warn-title">存证异常</view>
+        <view class="warn-items">{{feedbackIssues}}</view>
+      </view>
+      <view wx:if="{{feedbackMeta}}" class="evidence-line">
+        <text class="muted">拍摄：{{feedbackMeta.exifTime}}｜{{feedbackMeta.coord}}｜{{feedbackMeta.sourceLabel}}</text>
+      </view>
+      <view wx:if="{{feedbackText}}" class="section-body">{{feedbackText}}</view>
+    </block>
+    <view wx:elif="{{feedbackArchivedHint}}" class="archived-hint">{{feedbackArchivedHint}}</view>
+    <view wx:else class="archived-hint">责任人尚未提交整改反馈</view>
+  </view>
+
+  <!-- 操作按钮区（status + 角色互斥渲染） -->
+  <view class="action-area">
+    <button wx:if="{{showAccept}}" class="btn-primary action-btn" disabled="{{acting}}"
+      data-action="accept" bindtap="doAction">接收工单</button>
+    <button wx:if="{{showStart}}" class="btn-primary action-btn" disabled="{{acting}}"
+      data-action="start" bindtap="doAction">开始整改</button>
+    <button wx:if="{{showFeedback}}" class="btn-orange action-btn" bindtap="openFeedback">提交整改反馈</button>
+    <block wx:if="{{showReview}}">
+      <button class="btn-green action-btn" disabled="{{acting}}" bindtap="reviewPass">通过并闭环</button>
+      <button class="btn-red action-btn" bindtap="openReject">不通过打回</button>
+    </block>
+    <button wx:if="{{showUrge}}" class="btn-primary action-btn" disabled="{{acting}}"
+      data-action="urge" bindtap="doAction">催办</button>
+    <button wx:if="{{showTransfer}}" class="btn-primary action-btn" bindtap="openTransfer">转派责任人</button>
+    <button wx:if="{{showCancel}}" class="btn-red action-btn" bindtap="openCancel">作废工单</button>
+  </view>
+
+  <!-- 时间线：底部倒序 -->
+  <view class="card">
+    <view class="section-title">流转时间线</view>
+    <view class="timeline">
+      <view wx:for="{{logs}}" wx:key="id" class="tl-node">
+        <view class="tl-dot"></view>
+        <view class="tl-body">
+          <view class="tl-head">
+            <view class="tl-action">{{item.actionLabel}}</view>
+            <view class="tl-time muted">{{item.time}}</view>
+          </view>
+          <view class="tl-operator muted">{{item.operator_name}}</view>
+          <view wx:if="{{item.remark}}" class="tl-remark">{{item.remark}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 整改反馈提交弹层 -->
+  <view wx:if="{{feedbackOpen}}" class="modal-mask" bindtap="closeFeedback">
+    <view class="modal" catchtap="noop">
+      <view class="modal-title">提交整改反馈</view>
+      <view class="fb-photo-area" bindtap="chooseFbPhoto">
+        <image wx:if="{{fbPhotoFull}}" class="fb-photo" src="{{fbPhotoFull}}" mode="aspectFill"
+          catchtap="previewFbPhoto" />
+        <view wx:else class="fb-photo-add">{{fbUploading ? '上传中…' : '+ 拍摄整改后照片'}}</view>
+      </view>
+      <view>照片 {{fbPhotos.length}}/9；点击照片区域继续拍摄。离线内容保留，再次提交时同步。</view>
+      <view wx:for="{{fbPhotos}}" wx:key="key">照片 {{index+1}}：{{item.id ? '已上传' : '等待同步'}}</view>
+      <textarea class="fb-textarea" placeholder="请填写整改说明（必填）" value="{{fbText}}"
+        maxlength="500" bindinput="onFbTextInput" />
+      <view class="modal-btns">
+        <button class="btn-plain modal-btn" disabled="{{fbSubmitting}}" bindtap="closeFeedback">取消</button>
+        <button class="btn-orange modal-btn" disabled="{{fbSubmitting}}" bindtap="submitFeedback">
+          {{fbSubmitting ? '提交中…' : '提交反馈'}}</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 打回意见弹窗 -->
+  <view wx:if="{{rejectOpen}}" class="modal-mask" bindtap="closeReject">
+    <view class="modal" catchtap="noop">
+      <view class="modal-title">打回意见</view>
+      <textarea class="fb-textarea" placeholder="请填写打回意见（必填）" value="{{rejectComment}}"
+        maxlength="500" bindinput="onRejectInput" />
+      <view class="modal-btns">
+        <button class="btn-plain modal-btn" disabled="{{rejectSubmitting}}" bindtap="closeReject">取消</button>
+        <button class="btn-red modal-btn" disabled="{{rejectSubmitting}}" bindtap="submitReject">
+          {{rejectSubmitting ? '提交中…' : '确认打回'}}</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 转派弹窗：选新责任人 + 原因（选填） -->
+  <view wx:if="{{transferOpen}}" class="modal-mask" bindtap="closeTransfer">
+    <view class="modal" catchtap="noop">
+      <view class="modal-title">转派责任人</view>
+      <view wx:if="{{transferLoading}}" class="empty" style="padding: 40rpx 0;">候选人加载中…</view>
+      <block wx:else>
+        <view wx:if="{{!transferNames.length}}" class="empty" style="padding: 40rpx 0;">
+          暂无其他可转派的整改责任人</view>
+        <block wx:else>
+          <picker mode="selector" range="{{transferNames}}" value="{{transferIndex}}"
+            bindchange="onTransferPick">
+            <view class="picker-field">
+              <text wx:if="{{transferIndex >= 0}}">{{transferNames[transferIndex]}}</text>
+              <text wx:else class="muted">请选择新责任人</text>
+            </view>
+          </picker>
+          <textarea class="fb-textarea" placeholder="转派原因（选填，将通知双方）" value="{{transferReason}}"
+            maxlength="200" bindinput="onTransferReasonInput" />
+        </block>
+      </block>
+      <view class="modal-btns">
+        <button class="btn-plain modal-btn" disabled="{{transferSubmitting}}" bindtap="closeTransfer">取消</button>
+        <button class="btn-primary modal-btn" disabled="{{transferSubmitting || !transferNames.length}}"
+          bindtap="submitTransfer">{{transferSubmitting ? '提交中…' : '确认转派'}}</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 作废弹窗：原因必填 -->
+  <view wx:if="{{cancelOpen}}" class="modal-mask" bindtap="closeCancel">
+    <view class="modal" catchtap="noop">
+      <view class="modal-title">作废工单</view>
+      <view class="cancel-warn">作废后工单终止且不可恢复，责任人与发起人将收到通知，请谨慎操作。</view>
+      <textarea class="fb-textarea" placeholder="请填写作废原因（必填，如：误建工单）" value="{{cancelReason}}"
+        maxlength="200" bindinput="onCancelReasonInput" />
+      <view class="modal-btns">
+        <button class="btn-plain modal-btn" disabled="{{cancelSubmitting}}" bindtap="closeCancel">取消</button>
+        <button class="btn-red modal-btn" disabled="{{cancelSubmitting}}" bindtap="submitCancel">
+          {{cancelSubmitting ? '提交中…' : '确认作废'}}</button>
+      </view>
+    </view>
+  </view>
+</view>

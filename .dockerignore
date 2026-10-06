@@ -1,0 +1,12 @@
+**
+!admin-web/
+!admin-web/package.json
+!admin-web/package-lock.json
+!admin-web/index.html
+!admin-web/vite.config.js
+!admin-web/src/
+!admin-web/src/**
+!admin-web/public/
+!admin-web/public/**
+!admin-web/docker/
+!admin-web/docker/**

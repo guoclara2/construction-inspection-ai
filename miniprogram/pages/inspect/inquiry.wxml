@@ -1,0 +1,67 @@
+<view class="page-wrap">
+  <view class="card">
+    <view class="group-label">项目类型</view>
+    <view class="chips">
+      <view
+        wx:for="{{typeOptions}}"
+        wx:key="value"
+        class="chip {{projectType === item.value ? 'chip-active' : ''}}"
+        data-value="{{item.value}}"
+        bindtap="onTypeTap"
+      >{{item.label}}</view>
+    </view>
+
+    <view class="group-label">建设阶段</view>
+    <view class="chips">
+      <view
+        wx:for="{{phaseOptions}}"
+        wx:key="value"
+        class="chip {{phase === item.value ? 'chip-active' : ''}}"
+        data-value="{{item.value}}"
+        bindtap="onPhaseTap"
+      >{{item.label}}</view>
+    </view>
+
+    <textarea
+      class="ask-input"
+      value="{{text}}"
+      bindinput="onTextInput"
+      placeholder="如：深基坑，开挖深度 6 米"
+      placeholder-class="ask-placeholder"
+      maxlength="200"
+      auto-height
+    />
+
+    <button
+      class="btn-primary submit-btn"
+      disabled="{{!projectType || !phase || submitting}}"
+      bindtap="submit"
+    >{{submitting ? '正在获取推荐事项…' : '获取推荐事项'}}</button>
+  </view>
+
+  <view class="chat">
+    <block wx:for="{{chat}}" wx:key="index" wx:for-item="msg">
+      <view wx:if="{{msg.role === 'user'}}" class="bubble bubble-user">{{msg.summary}}</view>
+      <view wx:else class="bubble bubble-system">
+        <view wx:if="{{msg.loading}}" class="muted loading-text">正在获取推荐事项…</view>
+        <view wx:elif="{{msg.error}}" class="muted">获取推荐失败，请重新提交</view>
+        <block wx:else>
+          <view wx:for="{{msg.items}}" wx:for-item="rec" wx:key="id" class="rec-card">
+            <view class="rec-head">
+              <view class="rec-name">{{rec.name}}</view>
+              <view class="tag" style="color:{{rec.riskColor}};border:1rpx solid {{rec.riskColor}}">{{rec.riskLabel}}</view>
+            </view>
+            <view class="rec-points">
+              <view wx:for="{{rec.check_points}}" wx:for-item="pt" wx:key="*this" class="rec-point">· {{pt}}</view>
+            </view>
+            <view class="rec-basis">{{rec.basis}}</view>
+            <view class="rec-reason muted">推荐理由：{{rec.reason}}</view>
+            <button class="btn-sm" data-id="{{rec.id}}" catchtap="goForm">去填报</button>
+          </view>
+          <view wx:if="{{!msg.items.length}}" class="muted">暂无数据</view>
+          <view class="rec-footer">以上推荐基于检查标准库生成，仅供参考，请结合现场实际执行</view>
+        </block>
+      </view>
+    </block>
+  </view>
+</view>

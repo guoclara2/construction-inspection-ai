@@ -1,0 +1,16 @@
+**
+!app/
+!app/**
+!migrations/
+!migrations/**
+!scripts/
+!scripts/bootstrap_admin.py
+!scripts/evaluate_ai.py
+!scripts/backup_restore.py
+!docker/
+!docker/entrypoint.sh
+!requirements.txt
+!alembic.ini
+**/__pycache__/
+**/*.pyc
+app/tests/

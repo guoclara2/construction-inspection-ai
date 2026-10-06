@@ -1,0 +1,326 @@
+/* 工单详情页样式 */
+.page-wrap {
+  padding: 24rpx 24rpx 40rpx;
+}
+
+/* 头部 */
+.head-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.head-no {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #1A2634;
+}
+.head-status {
+  font-size: 28rpx;
+  font-weight: 600;
+}
+.head-tags {
+  margin-top: 16rpx;
+  display: flex;
+  gap: 12rpx;
+}
+.head-meta {
+  margin-top: 16rpx;
+  font-size: 26rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+.deadline-line {
+  color: #E6A23C;
+  font-weight: 600;
+}
+
+/* 区块标题与正文 */
+.section-title {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #1A2634;
+  margin-bottom: 12rpx;
+}
+.section-body {
+  font-size: 26rpx;
+  color: #1A2634;
+  line-height: 1.7;
+}
+
+/* 原始记录区 */
+.record-line {
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+}
+.record-name {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: #1A2634;
+}
+.record-tags {
+  display: flex;
+  gap: 12rpx;
+  flex-wrap: wrap;
+}
+.record-photo {
+  width: 100%;
+  height: 320rpx;
+  border-radius: 8rpx;
+  background: #F5F7FA;
+}
+/* P1-4：存证异常照片红框 + 橙色警示条 */
+.photo-suspicious {
+  border: 4rpx solid #E5652A;
+}
+.evidence-warn-bar {
+  margin-top: 12rpx;
+  background: rgba(230, 162, 60, 0.12);
+  border: 2rpx solid #E6A23C;
+  border-radius: 10rpx;
+  padding: 14rpx 20rpx;
+}
+.evidence-warn-bar .warn-title {
+  font-size: 26rpx;
+  font-weight: 700;
+  color: #B26A00;
+}
+.evidence-warn-bar .warn-items {
+  margin-top: 4rpx;
+  font-size: 24rpx;
+  color: #B26A00;
+  line-height: 1.6;
+}
+.ai-line {
+  background: #F5F7FA;
+  border-radius: 8rpx;
+  padding: 16rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+.ai-verdict {
+  font-size: 26rpx;
+  font-weight: 600;
+}
+.ai-desc {
+  font-size: 24rpx;
+  color: #5B6B7D;
+  line-height: 1.6;
+}
+
+/* 整改反馈区 */
+.archived-hint {
+  font-size: 26rpx;
+  color: #5B6B7D;
+}
+
+/* 操作按钮区 */
+.action-area {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+  margin-bottom: 20rpx;
+}
+.action-btn {
+  width: 100%;
+}
+.btn-orange {
+  background: #E6A23C;
+  color: #ffffff;
+  border-radius: 12rpx;
+  font-size: 30rpx;
+  text-align: center;
+  padding: 20rpx 0;
+}
+.btn-orange::after {
+  border: none;
+}
+.btn-green {
+  background: #2E7D3A;
+  color: #ffffff;
+  border-radius: 12rpx;
+  font-size: 30rpx;
+  text-align: center;
+  padding: 20rpx 0;
+}
+.btn-green::after {
+  border: none;
+}
+.btn-red {
+  background: #E5652A;
+  color: #ffffff;
+  border-radius: 12rpx;
+  font-size: 30rpx;
+  text-align: center;
+  padding: 20rpx 0;
+}
+.btn-red::after {
+  border: none;
+}
+.btn-plain {
+  background: #F5F7FA;
+  color: #5B6B7D;
+  border-radius: 12rpx;
+  font-size: 30rpx;
+  text-align: center;
+  padding: 20rpx 0;
+}
+.btn-plain::after {
+  border: none;
+}
+
+/* 时间线：节点圆点 + 竖线 */
+.timeline {
+  display: flex;
+  flex-direction: column;
+}
+.tl-node {
+  display: flex;
+  position: relative;
+  padding-bottom: 28rpx;
+}
+.tl-node::before {
+  content: '';
+  position: absolute;
+  left: 11rpx;
+  top: 28rpx;
+  bottom: 0;
+  width: 2rpx;
+  background: #E1E7EF;
+}
+.tl-node:last-child::before {
+  display: none;
+}
+.tl-dot {
+  width: 24rpx;
+  height: 24rpx;
+  border-radius: 50%;
+  background: #1E5FD0;
+  margin: 6rpx 20rpx 0 0;
+  flex-shrink: 0;
+}
+.tl-body {
+  flex: 1;
+}
+.tl-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.tl-action {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #1A2634;
+}
+.tl-time {
+  font-size: 24rpx;
+}
+.tl-operator {
+  font-size: 24rpx;
+}
+.tl-remark {
+  margin-top: 8rpx;
+  font-size: 24rpx;
+  color: #5B6B7D;
+  background: #F5F7FA;
+  border-radius: 8rpx;
+  padding: 12rpx 16rpx;
+  line-height: 1.6;
+}
+
+/* 弹层 */
+.modal-mask {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(26, 38, 52, 0.5);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modal {
+  width: 640rpx;
+  background: #ffffff;
+  border-radius: 16rpx;
+  padding: 32rpx;
+}
+.modal-title {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #1A2634;
+  text-align: center;
+  margin-bottom: 24rpx;
+}
+.fb-photo-area {
+  margin-bottom: 20rpx;
+}
+.fb-photo {
+  width: 100%;
+  height: 360rpx;
+  border-radius: 8rpx;
+  background: #F5F7FA;
+}
+.fb-photo-add {
+  height: 200rpx;
+  border: 2rpx dashed #C4CDD8;
+  border-radius: 8rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #5B6B7D;
+  font-size: 26rpx;
+}
+.fb-textarea {
+  width: 100%;
+  height: 200rpx;
+  background: #F5F7FA;
+  border-radius: 8rpx;
+  padding: 16rpx;
+  font-size: 26rpx;
+  box-sizing: border-box;
+  margin-bottom: 24rpx;
+}
+
+/* 转派责任人选择器与作废警示条 */
+.picker-field {
+  height: 80rpx;
+  line-height: 80rpx;
+  background: #F5F7FA;
+  border-radius: 8rpx;
+  padding: 0 24rpx;
+  font-size: 26rpx;
+  margin-bottom: 24rpx;
+}
+.cancel-warn {
+  background: #FDF6EC;
+  color: #E6A23C;
+  border-radius: 8rpx;
+  padding: 16rpx 24rpx;
+  font-size: 24rpx;
+  line-height: 1.6;
+  margin-bottom: 24rpx;
+}
+.modal-btns {
+  display: flex;
+  gap: 20rpx;
+}
+.modal-btn {
+  flex: 1;
+}
+
+/* 照片存证信息行（P04 §2.5.5） */
+.evidence-line {
+  margin-top: 12rpx;
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  flex-wrap: wrap;
+}
+.evidence-line .muted {
+  font-size: 22rpx;
+}

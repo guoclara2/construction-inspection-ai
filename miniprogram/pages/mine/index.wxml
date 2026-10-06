@@ -1,0 +1,46 @@
+<view class="page-wrap">
+  <!-- 用户信息卡 -->
+  <view class="card user-card">
+    <view class="user-name">{{name}}</view>
+    <view class="user-meta">
+      <view class="tag tag-primary">{{roleLabel}}</view>
+      <view wx:if="{{specialtyLabel}}" class="tag tag-info">{{specialtyLabel}}</view>
+    </view>
+    <view class="user-project muted">当前项目：{{projectName || '—'}}</view>
+  </view>
+
+  <!-- 多项目：切换项目入口 -->
+  <view wx:if="{{multiProject}}" class="card cell-group">
+    <view class="cell" bindtap="switchProject">
+      <view class="cell-label">切换项目</view>
+      <view class="cell-value">{{projectName || '—'}}<text class="cell-arrow">›</text></view>
+    </view>
+  </view>
+
+  <!-- 功能列表 -->
+  <view class="card cell-group">
+    <!-- AI 功能说明（页内展开区） -->
+    <view class="cell" bindtap="toggleAiDesc">
+      <view class="cell-label">AI 功能说明</view>
+      <view class="cell-arrow {{aiDescOpen ? 'cell-arrow-open' : ''}}">›</view>
+    </view>
+    <view wx:if="{{aiDescOpen}}" class="ai-desc">
+      <view class="ai-desc-title">AI 能力边界</view>
+      <view class="ai-desc-text">事项推荐、图像判别、工单草稿生成均为 AI 辅助能力，旨在提升巡查效率，不能替代人工判断。</view>
+      <view class="ai-desc-title">免责声明</view>
+      <view class="ai-desc-text ai-disclaimer">AI 结论仅供参考，不构成最终判定，最终判断以持证专业人员现场确认为准。</view>
+    </view>
+
+    <!-- 当前后端状态 -->
+    <view class="cell">
+      <view class="cell-label">当前后端状态</view>
+      <view class="cell-value {{aiModeOk ? 'cell-value-ok' : 'cell-value-warn'}}">{{aiModeLabel}}</view>
+    </view>
+
+    <!-- 切换账号（退出登录同义） -->
+    <view class="cell" bindtap="switchAccount">
+      <view class="cell-label">切换账号 / 退出登录</view>
+      <view class="cell-arrow">›</view>
+    </view>
+  </view>
+</view>

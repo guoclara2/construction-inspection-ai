@@ -1,0 +1,165 @@
+<view class="page-wrap">
+  <!-- 检查项 -->
+  <view class="card">
+    <view class="section-label">检查项</view>
+    <block wx:if="{{item}}">
+      <view class="item-name">{{item.name}}</view>
+      <view class="item-points">
+        <view wx:for="{{item.check_points}}" wx:for-item="pt" wx:key="*this" class="item-point">· {{pt}}</view>
+      </view>
+      <view class="item-basis muted">{{item.basis}}</view>
+    </block>
+    <block wx:else>
+      <input
+        class="search-input"
+        value="{{keyword}}"
+        bindinput="onKeywordInput"
+        placeholder="输入关键词搜索检查项"
+        placeholder-class="input-placeholder"
+        confirm-type="search"
+      />
+      <view wx:if="{{searching}}" class="muted search-tip">搜索中…</view>
+      <view wx:elif="{{searchResults.length}}" class="search-list">
+        <view
+          wx:for="{{searchResults}}"
+          wx:key="id"
+          wx:for-item="opt"
+          class="search-item"
+          data-id="{{opt.id}}"
+          bindtap="onPickItem"
+        >{{opt.name}}</view>
+      </view>
+      <view wx:elif="{{keyword}}" class="muted search-tip">暂无匹配检查项</view>
+    </block>
+  </view>
+
+  <view class="card">
+    <view class="section-label">现场位置（创建后冻结）</view>
+    <textarea
+      class="location-input"
+      value="{{location.custom}}"
+      bindinput="onLocationInput"
+      placeholder="请输入现场位置描述，如：3 号楼 2 层东侧走廊、桩号 K12+300 等"
+      placeholder-class="input-placeholder"
+      maxlength="1000"
+      disabled="{{recordId || createPayload}}"
+      auto-height
+    />
+  </view>
+  <!-- 现场照片 -->
+  <view class="card">
+    <view class="section-label">现场照片</view>
+    <block wx:if="{{photoFull}}">
+      <image class="photo" src="{{photoFull}}" mode="aspectFill" bindtap="previewPhoto" />
+      <view class="retake-btn" bindtap="retakePhoto">重拍</view>
+    </block>
+    <view wx:else class="photo-add {{uploading ? 'photo-disabled' : ''}}" bindtap="choosePhoto">
+      <view>{{uploading ? '上传中…' : '拍摄现场照片'}}</view>
+      <view class="muted photo-tip">须现场拍摄，照片将附加时间与定位存证</view>
+    </view>
+  </view>
+
+  <view class="card draft-card">
+    <view class="draft-card-head">
+      <view class="draft-card-title">本地草稿</view>
+      <view class="tag {{photos.length ? 'tag-success' : 'tag-info'}}">照片 {{photos.length}}/9</view>
+    </view>
+    <view class="muted draft-card-tip">草稿已自动保存。断网时可继续拍摄，联网后点击同步。</view>
+    <view wx:for="{{photos}}" wx:key="key" class="draft-photo-row">
+      <text>照片 {{index + 1}}</text>
+      <text class="muted">{{item.id ? '已上传' : '等待同步'}} {{item.reasons}}</text>
+    </view>
+    <view class="draft-card-actions">
+      <button class="btn-ghost draft-btn" disabled="{{recordId || createPayload || uploading || photos.length >= 9}}" bindtap="choosePhoto">补充现场照片</button>
+      <button class="btn-ghost draft-btn" disabled="{{uploading || recordId}}" bindtap="retryUploads">同步待上传照片</button>
+    </view>
+    <view wx:if="{{jobStage}}" class="muted draft-job-stage">{{jobStage}}</view>
+  </view>
+  <!-- 一键 AI 判别 -->
+  <button
+    class="btn-primary analyze-btn"
+    disabled="{{!item || !photos.length || analyzing}}"
+    bindtap="analyze"
+  >{{analyzing ? 'AI 正在分析…' : (analyzeFailed ? '重新分析' : '一键 AI 判别')}}</button>
+
+  <button class="btn-ghost manual-btn" disabled="{{!item || !photos.length || analyzing}}" bindtap="manualInspect">直接人工巡查</button>
+  <!-- AI 判别结果卡片 -->
+  <view wx:if="{{aiDisplay}}" class="card ai-card">
+    <view wx:if="{{mode === 'mock'}}" class="ai-badge">AI 演示模式</view>
+    <view class="ai-verdict ai-{{aiDisplay.verdictClass}}">{{aiDisplay.verdictText}}</view>
+    <view wx:if="{{aiDisplay.preliminaryText}}">{{aiDisplay.preliminaryText}}</view>
+    <view wx:if="{{aiDisplay.reviewReason}}">{{aiDisplay.reviewReason}}</view>
+    <view class="ai-row">
+      <view class="tag" style="color:{{aiDisplay.severityColor}};border:1rpx solid {{aiDisplay.severityColor}}">{{aiDisplay.severity}}</view>
+      <view class="ai-confidence ai-conf-{{aiDisplay.confidenceClass}}">模型自评 {{aiDisplay.confidencePct}}%（非准确率）</view>
+      <view wx:if="{{aiDisplay.confidenceHint}}" class="ai-confidence-hint">{{aiDisplay.confidenceHint}}</view>
+    </view>
+    <view class="ai-block">
+      <view class="ai-label">异常描述</view>
+      <view class="ai-text">{{aiDisplay.defect_desc}}</view>
+    </view>
+    <view class="ai-block">
+      <view class="ai-label">规范依据</view>
+      <view class="ai-quote">{{aiDisplay.basis}}</view>
+    </view>
+    <view class="ai-block">
+      <view class="ai-label">处置建议</view>
+      <view class="ai-text">{{aiDisplay.suggestion}}</view>
+    </view>
+    <view class="ai-footer">AI 结论仅供参考，不构成最终判定</view>
+  </view>
+
+  <!-- 人工确认 -->
+  <view wx:if="{{aiResult}}" class="card">
+    <view class="section-label">人工确认结论</view>
+    <view class="verdict-row">
+      <view class="verdict-opt {{verdict === 'normal' ? 'verdict-normal-active' : ''}}" data-value="normal" bindtap="onVerdictTap">正常</view>
+      <view class="verdict-opt {{verdict === 'abnormal' ? 'verdict-abnormal-active' : ''}}" data-value="abnormal" bindtap="onVerdictTap">异常</view>
+    </view>
+    <textarea
+      class="note-input"
+      value="{{note}}"
+      bindinput="onNoteInput"
+      placeholder="请记录现场核验依据、实测值及 AI 判断需纠正之处，供后续复核改进"
+      placeholder-class="input-placeholder"
+      maxlength="500"
+      auto-height
+    />
+
+    <!-- 工单草稿（选异常时展开） -->
+    <block wx:if="{{verdict === 'abnormal'}}">
+      <view class="draft-title">整改工单草稿（确认后原样下发）</view>
+      <view wx:if="{{draftReady}}">整改时限：建单后 {{slaHours}} 小时，以工单截止时间为准</view>
+      <button bindtap="loadDraft">重新获取草稿与时限（会替换当前草稿）</button>
+      <view wx:if="{{!aiActionable}}" class="ai-discard-tip">请依据现场情况人工填写问题描述与整改要求</view>
+      <view class="draft-label">{{aiActionable ? '问题定位' : '问题定位（必填）'}}</view>
+      <textarea class="draft-input" value="{{draft.problem_location}}" data-field="problem_location" bindinput="onDraftInput" maxlength="500" auto-height />
+      <view class="draft-label">{{aiActionable ? '整改要求' : '整改要求（必填）'}}</view>
+      <textarea class="draft-input" value="{{draft.rectify_requirement}}" data-field="rectify_requirement" bindinput="onDraftInput" maxlength="500" auto-height />
+      <view class="draft-label">规范依据</view>
+      <textarea class="draft-input" value="{{draft.basis}}" data-field="basis" bindinput="onDraftInput" maxlength="500" auto-height />
+
+      <view class="draft-title">指派整改责任人</view>
+      <view wx:for="{{assigneeGroups}}" wx:key="key" wx:for-item="group" class="assignee-group">
+        <view class="group-header muted">{{group.label}}</view>
+        <view
+          wx:for="{{group.users}}"
+          wx:key="user_id"
+          wx:for-item="u"
+          class="assignee-item {{assigneeId === u.user_id ? 'assignee-active' : ''}}"
+          data-id="{{u.user_id}}"
+          bindtap="onAssigneeTap"
+        >
+          <view class="assignee-name">{{u.name}}</view>
+          <view class="muted assignee-count">未闭环 {{u.open_count}} 单</view>
+        </view>
+      </view>
+    </block>
+  </view>
+
+  <!-- 提交 -->
+  <button wx:if="{{aiResult}}" class="btn-primary submit-btn" disabled="{{submitting}}" bindtap="submit">
+    {{submitting ? '提交中…' : '提交确认'}}
+  </button>
+
+</view>

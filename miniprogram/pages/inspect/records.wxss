@@ -1,0 +1,39 @@
+/* 巡查记录列表页样式 */
+.page-wrap {
+  padding: 24rpx 24rpx 40rpx;
+}
+
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+  margin-bottom: 20rpx;
+}
+
+.record-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.record-name {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #1A2634;
+  flex: 1;
+  margin-right: 16rpx;
+}
+.record-time {
+  font-size: 24rpx;
+  white-space: nowrap;
+}
+.record-tags {
+  margin-top: 16rpx;
+  display: flex;
+  gap: 12rpx;
+}
+
+.list-end {
+  text-align: center;
+  font-size: 24rpx;
+  padding: 20rpx 0;
+}

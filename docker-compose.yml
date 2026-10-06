@@ -1,0 +1,117 @@
+# Production: docker compose --env-file .env.production up -d --build
+name: site-inspection
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: inspect
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set a strong URL-safe password}
+      POSTGRES_DB: inspect
+    volumes: ["pg_data:/var/lib/postgresql/data"]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U inspect -d inspect"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+  redis:
+    image: redis:7
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD:?Set a strong URL-safe password}
+    command: ["sh", "-c", 'exec redis-server --appendonly yes --requirepass "$$REDIS_PASSWORD"']
+    volumes: ["redis_data:/data"]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", 'REDISCLI_AUTH="$$REDIS_PASSWORD" redis-cli ping | grep -q PONG']
+      interval: 5s
+      timeout: 3s
+      retries: 20
+  api:
+    build:
+      context: ./backend
+      dockerfile: docker/Dockerfile
+    environment:
+      APP_ENV: prod
+      PORT: "8000"
+      DATABASE_URL: postgresql+psycopg://inspect:${POSTGRES_PASSWORD:?required}@postgres:5432/inspect
+      REDIS_URL: redis://:${REDIS_PASSWORD:?required}@redis:6379/0
+      JWT_SECRET: ${JWT_SECRET:?Set a random 32+ character secret}
+      CORS_ORIGINS: ${CORS_ORIGINS:?Set the real HTTPS origin}
+      DEV_LOGIN_ENABLED: "false"
+      AI_PRODUCTION_ENABLED: ${AI_PRODUCTION_ENABLED:-false}
+      AI_EVALUATION_REPORT: /app/evaluation/acceptance.json
+      SCHEDULER_ENABLED: "true"
+      AI_DAILY_QUOTA: ${AI_DAILY_QUOTA:-500}
+      AI_USER_DAILY_QUOTA: ${AI_USER_DAILY_QUOTA:-100}
+      AI_PROJECT_CONCURRENCY: ${AI_PROJECT_CONCURRENCY:-2}
+      AI_PRICES: ${AI_PRICES:-{}}
+      AI_API_KEY: ${AI_API_KEY:-${DASHSCOPE_API_KEY:-}}
+      DASHSCOPE_API_KEY: ${DASHSCOPE_API_KEY:-}
+      AI_PROVIDER_BASE_URL: ${AI_PROVIDER_BASE_URL:-https://dashscope.aliyuncs.com/compatible-mode/v1}
+      AI_VISION_MODEL: ${AI_VISION_MODEL:-qwen3-vl-flash}
+      AI_TEXT_MODEL: ${AI_TEXT_MODEL:-qwen-turbo}
+      AI_TIMEOUT: ${AI_TIMEOUT:-30}
+      AI_WORKER_ENABLED: ${AI_WORKER_ENABLED:-false}
+      AI_TENANT_RATE: ${AI_TENANT_RATE:-60}
+      AI_TENANT_BURST: ${AI_TENANT_BURST:-120}
+      WX_APPID: ${WX_APPID:?Set the WeChat Mini Program AppID}
+      WX_SECRET: ${WX_SECRET:?Set the WeChat Mini Program AppSecret}
+      STORAGE_BACKEND: local
+    volumes:
+      - api_storage:/app/storage
+      - ./evaluation:/app/evaluation:ro
+    depends_on:
+      postgres: {condition: service_healthy}
+      redis: {condition: service_healthy}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health', timeout=5)"]
+      interval: 20s
+      timeout: 8s
+      retries: 5
+  worker:
+    build:
+      context: ./backend
+      dockerfile: docker/Dockerfile
+    environment:
+      APP_ENV: prod
+      SERVICE_ROLE: worker
+      DATABASE_URL: postgresql+psycopg://inspect:${POSTGRES_PASSWORD:?required}@postgres:5432/inspect
+      REDIS_URL: redis://:${REDIS_PASSWORD:?required}@redis:6379/0
+      JWT_SECRET: ${JWT_SECRET:?Set a random 32+ character secret}
+      AI_PRODUCTION_ENABLED: ${AI_PRODUCTION_ENABLED:-false}
+      AI_EVALUATION_REPORT: /app/evaluation/acceptance.json
+      AI_DAILY_QUOTA: ${AI_DAILY_QUOTA:-500}
+      AI_USER_DAILY_QUOTA: ${AI_USER_DAILY_QUOTA:-100}
+      AI_PROJECT_CONCURRENCY: ${AI_PROJECT_CONCURRENCY:-2}
+      AI_PRICES: ${AI_PRICES:-{}}
+      AI_API_KEY: ${AI_API_KEY:-${DASHSCOPE_API_KEY:-}}
+      DASHSCOPE_API_KEY: ${DASHSCOPE_API_KEY:-}
+      AI_PROVIDER_BASE_URL: ${AI_PROVIDER_BASE_URL:-https://dashscope.aliyuncs.com/compatible-mode/v1}
+      AI_VISION_MODEL: ${AI_VISION_MODEL:-qwen3-vl-flash}
+      AI_TEXT_MODEL: ${AI_TEXT_MODEL:-qwen-turbo}
+      AI_TIMEOUT: ${AI_TIMEOUT:-30}
+      AI_TENANT_RATE: ${AI_TENANT_RATE:-60}
+      AI_TENANT_BURST: ${AI_TENANT_BURST:-120}
+      STORAGE_BACKEND: local
+    volumes:
+      - api_storage:/app/storage
+      - ./evaluation:/app/evaluation:ro
+    depends_on:
+      postgres: {condition: service_healthy}
+      redis: {condition: service_healthy}
+    restart: unless-stopped
+  web:
+    build:
+      context: .
+      dockerfile: admin-web/docker/Dockerfile
+    ports: ["80:80", "443:443"]
+    volumes:
+      - ${TLS_CERT_DIR:?Set certificate directory}:/etc/nginx/certs:ro
+    depends_on:
+      api: {condition: service_healthy}
+    restart: unless-stopped
+volumes:
+  pg_data:
+  redis_data:
+  api_storage:

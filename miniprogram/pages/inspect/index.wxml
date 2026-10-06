@@ -1,0 +1,34 @@
+<view class="page-wrap">
+  <view class="card project-card" bindtap="switchProject">
+    <view class="project-name">
+      {{projectName}}
+      <text wx:if="{{multiProject}}" class="project-switch">切换 ›</text>
+    </view>
+    <view class="muted project-meta">{{typeLabel}} · {{phaseLabel}}</view>
+  </view>
+
+  <navigator url="/pages/inspect/tasks" class="card">巡查计划与离线草稿 ›</navigator>
+  <view class="entry-row">
+    <view class="entry-btn" bindtap="goInquiry">
+      <view class="entry-title">开始智能问询</view>
+      <view class="muted entry-desc">AI 推荐巡查事项</view>
+    </view>
+    <view class="entry-btn entry-primary" bindtap="goForm">
+      <view class="entry-title">现场巡查填报</view>
+      <view class="entry-desc-light">拍照 · 一键 AI 判别</view>
+    </view>
+  </view>
+
+  <view class="section-title">最近巡查记录</view>
+  <view wx:for="{{records}}" wx:key="id" class="card record-card" data-id="{{item.id}}" bindtap="goRecordDetail">
+    <view class="record-head">
+      <view class="record-name">{{item.item_name}}</view>
+      <view class="muted record-time">{{item.time}}</view>
+    </view>
+    <view class="record-tags">
+      <view wx:if="{{item.aiLabel}}" class="tag {{item.aiDefect ? 'tag-danger' : 'tag-success'}}">{{item.aiLabel}}</view>
+      <view class="tag {{item.humanVerdict === 'normal' ? 'tag-success' : (item.humanVerdict === 'abnormal' ? 'tag-danger' : 'tag-info')}}">{{item.humanLabel}}</view>
+    </view>
+  </view>
+  <view wx:if="{{!records.length}}" class="empty">暂无数据</view>
+</view>

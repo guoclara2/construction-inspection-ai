@@ -1,0 +1,46 @@
+<view class="page-wrap">
+  <!-- 统计概览 -->
+  <view class="card stats-card">
+    <view class="stats-row">
+      <view class="stat"><view class="stat-num">{{counts.pending || 0}}</view><view class="stat-label">待检</view></view>
+      <view class="stat"><view class="stat-num stat-warn">{{counts.missed || 0}}</view><view class="stat-label">漏检</view></view>
+      <view class="stat"><view class="stat-num stat-success">{{counts.done || 0}}</view><view class="stat-label">按时完成</view></view>
+      <view class="stat"><view class="stat-num stat-info">{{counts.late || 0}}</view><view class="stat-label">补检</view></view>
+    </view>
+  </view>
+
+  <view wx:if="{{error}}" class="error-tip">{{error}}</view>
+
+  <!-- 本地待完成草稿 -->
+  <view class="section-title">本地待完成草稿</view>
+  <view wx:if="{{!drafts.length}}" class="empty-draft muted">暂无本地草稿</view>
+  <view wx:for="{{drafts}}" wx:key="id" class="card draft-card">
+    <view class="draft-head">
+      <view class="draft-name">{{item.data.item.name || '未选择检查项'}}</view>
+      <view class="muted draft-time">{{item.updatedAt}}</view>
+    </view>
+    <view class="muted draft-meta">
+      照片 {{item.data.photos.length || 0}}/9 ·
+      {{item.data.mode === 'manual' ? '人工巡查' : (item.data.aiResult ? '已 AI 判别' : '待判定')}}
+    </view>
+    <view class="draft-actions">
+      <button class="btn-ghost draft-btn" data-id="{{item.id}}" bindtap="resume">继续编辑</button>
+      <button class="draft-btn-danger" data-id="{{item.id}}" bindtap="discard">删除草稿</button>
+    </view>
+  </view>
+
+  <!-- 巡查任务 -->
+  <view class="section-title">巡查任务</view>
+  <view wx:if="{{!tasks.length}}" class="empty-draft muted">暂无巡查任务</view>
+  <view wx:for="{{tasks}}" wx:key="id" class="card task-card">
+    <view class="task-head">
+      <view class="task-name">{{item.plan_name}}</view>
+      <view class="tag {{item.statusClass}}">{{item.statusLabel}}</view>
+    </view>
+    <view class="task-meta">
+      <view class="muted">计划日期 {{item.scheduled_date}}</view>
+      <view wx:if="{{item.due_at}}" class="muted">截止 {{item.due_at}}</view>
+    </view>
+    <button wx:if="{{item.status !== 'cancelled'}}" class="btn-primary task-btn" data-id="{{item.id}}" bindtap="start">{{item.record_id ? '查看关联记录' : '执行巡查'}}</button>
+  </view>
+</view>

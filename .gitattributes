@@ -1,0 +1,2 @@
+# 保证容器内 shell 脚本始终为 LF，避免 Windows 检出为 CRLF 导致 entrypoint 无法执行
+*.sh text eol=lf

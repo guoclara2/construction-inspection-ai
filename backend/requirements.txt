@@ -1,0 +1,26 @@
+-c constraints.txt
+fastapi
+uvicorn
+sqlalchemy
+pydantic
+pydantic-settings
+python-jose[cryptography]
+bcrypt
+openpyxl
+openai
+httpx
+python-multipart
+python-dotenv
+# 生产化底座（P01 起）
+psycopg[binary]
+alembic
+redis
+APScheduler
+Pillow
+piexif
+filetype
+boto3
+structlog
+reportlab
+# 微信云托管部署：MySQL 驱动（DATABASE_URL=mysql+pymysql://...）
+pymysql

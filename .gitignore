@@ -1,0 +1,17 @@
+data/
+uploads/
+storage/
+.venv/
+node_modules/
+__pycache__/
+dist/
+*.pyc
+.env
+.env.production
+.pytest_cache/
+.runtime/
+.verification/
+certs/
+evaluation/acceptance.json
+deploy/
+miniprogram/project.private.config.json

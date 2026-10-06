@@ -1,0 +1,27 @@
+<view class="page">
+  <view class="header">
+    <view class="title">选择项目</view>
+    <view class="sub">您参与了多个项目，请选择要进入的项目</view>
+  </view>
+  <view class="list">
+    <view
+      wx:for="{{projects}}"
+      wx:key="id"
+      class="item {{item.isCurrent ? 'active' : ''}}"
+      data-id="{{item.id}}"
+      bindtap="onSelect"
+    >
+      <view class="item-main">
+        <view class="name">{{item.name}}</view>
+        <view class="meta">
+          <text wx:if="{{item.code}}" class="code">{{item.code}}</text>
+          <text wx:if="{{item.org_unit}}" class="unit">{{item.org_unit}}</text>
+        </view>
+        <view class="roles">
+          <text wx:for="{{item.roleLabels}}" wx:for-item="r" wx:key="*this" class="role-tag">{{r}}</text>
+        </view>
+      </view>
+      <view wx:if="{{item.isCurrent}}" class="cur">当前</view>
+    </view>
+  </view>
+</view>

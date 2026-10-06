@@ -1,0 +1,25 @@
+<view class="page-wrap">
+  <view class="filter-bar">
+    <view
+      wx:for="{{filters}}"
+      wx:key="value"
+      class="chip {{activeFilter === item.value ? 'chip-active' : ''}}"
+      data-value="{{item.value}}"
+      bindtap="onFilterTap"
+    >{{item.label}}</view>
+  </view>
+
+  <view wx:for="{{records}}" wx:key="id" class="card record-card" data-id="{{item.id}}" bindtap="goDetail">
+    <view class="record-head">
+      <view class="record-name">{{item.item_name}}</view>
+      <view class="muted record-time">{{item.time}}</view>
+    </view>
+    <view class="record-tags">
+      <view wx:if="{{item.aiLabel}}" class="tag {{item.aiDefect ? 'tag-danger' : 'tag-success'}}">{{item.aiLabel}}</view>
+      <view class="tag {{item.humanVerdict === 'normal' ? 'tag-success' : (item.humanVerdict === 'abnormal' ? 'tag-danger' : 'tag-info')}}">{{item.humanLabel}}</view>
+    </view>
+  </view>
+
+  <view wx:if="{{!loading && !records.length}}" class="empty">暂无数据</view>
+  <view wx:if="{{noMore && records.length}}" class="muted list-end">已加载全部</view>
+</view>

@@ -1,0 +1,366 @@
+/* 巡查填报页样式 */
+.page-wrap {
+  padding: 24rpx 24rpx 60rpx;
+}
+
+.section-label {
+  font-size: 26rpx;
+  color: #5B6B7D;
+  margin-bottom: 16rpx;
+}
+
+/* 检查项卡片 */
+.item-name {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #1A2634;
+}
+.item-point {
+  font-size: 24rpx;
+  color: #1A2634;
+  line-height: 1.7;
+  margin-top: 8rpx;
+}
+.item-basis {
+  font-size: 22rpx;
+  margin-top: 12rpx;
+}
+
+/* 搜索选择器 */
+.search-input {
+  background: #F5F7FA;
+  border-radius: 12rpx;
+  padding: 18rpx 20rpx;
+  font-size: 26rpx;
+}
+.input-placeholder {
+  color: #9AA7B5;
+}
+.search-tip {
+  font-size: 24rpx;
+  margin-top: 16rpx;
+}
+.search-list {
+  margin-top: 12rpx;
+  border-top: 1rpx solid #F5F7FA;
+}
+.search-item {
+  padding: 20rpx 8rpx;
+  font-size: 26rpx;
+  color: #1A2634;
+  border-bottom: 1rpx solid #F5F7FA;
+}
+
+/* 照片区 */
+.photo {
+  width: 100%;
+  height: 400rpx;
+  border-radius: 12rpx;
+  background: #F5F7FA;
+}
+.photo-add {
+  height: 240rpx;
+  border: 2rpx dashed #C6D3E8;
+  border-radius: 12rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #5B6B7D;
+  font-size: 26rpx;
+  background: #FAFBFC;
+}
+.photo-tip {
+  margin-top: 10rpx;
+  font-size: 22rpx;
+}
+.photo-disabled {
+  opacity: 0.6;
+}
+.retake-btn {
+  margin-top: 16rpx;
+  text-align: center;
+  color: #1E5FD0;
+  font-size: 26rpx;
+  padding: 12rpx 0;
+  background: rgba(30, 95, 208, 0.06);
+  border-radius: 8rpx;
+}
+
+/* 判别按钮 */
+.analyze-btn {
+  margin-bottom: 20rpx;
+}
+.analyze-btn[disabled] {
+  background: #C6D3E8;
+  color: #ffffff;
+}
+
+/* AI 结果卡片 */
+.ai-card {
+  position: relative;
+}
+.ai-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: #E6A23C;
+  color: #ffffff;
+  font-size: 20rpx;
+  padding: 6rpx 16rpx;
+  border-radius: 0 12rpx 0 12rpx;
+}
+.ai-verdict {
+  font-size: 40rpx;
+  font-weight: 700;
+  margin-bottom: 16rpx;
+}
+.ai-danger { color: #E5652A; }
+.ai-success { color: #2E7D3A; }
+.ai-warn { color: #E6A23C; }
+.ai-row {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  margin-bottom: 8rpx;
+}
+.ai-confidence {
+  font-size: 24rpx;
+}
+.ai-conf-success { color: #2E7D3A; font-weight: 600; }
+.ai-conf-warn { color: #E6A23C; font-weight: 600; }
+.ai-confidence-hint {
+  font-size: 22rpx;
+  color: #B26A00;
+  background: #FDF3E7;
+  border-radius: 6rpx;
+  padding: 2rpx 10rpx;
+}
+.ai-block {
+  margin-top: 20rpx;
+}
+.ai-label {
+  font-size: 22rpx;
+  color: #5B6B7D;
+  margin-bottom: 8rpx;
+}
+.ai-text {
+  font-size: 26rpx;
+  color: #1A2634;
+  line-height: 1.7;
+}
+.ai-quote {
+  font-size: 24rpx;
+  color: #1A2634;
+  line-height: 1.7;
+  background: #F5F7FA;
+  border-left: 6rpx solid #1E5FD0;
+  padding: 14rpx 18rpx;
+  border-radius: 0 8rpx 8rpx 0;
+}
+.ai-footer {
+  margin-top: 24rpx;
+  font-size: 22rpx;
+  color: #5B6B7D;
+  text-align: center;
+}
+
+/* 人工确认 */
+.verdict-row {
+  display: flex;
+  gap: 20rpx;
+  margin-bottom: 20rpx;
+}
+.verdict-opt {
+  flex: 1;
+  text-align: center;
+  padding: 20rpx 0;
+  border-radius: 12rpx;
+  background: #F5F7FA;
+  color: #5B6B7D;
+  font-size: 28rpx;
+  border: 2rpx solid transparent;
+}
+.verdict-normal-active {
+  background: rgba(46, 125, 58, 0.08);
+  color: #2E7D3A;
+  border-color: #2E7D3A;
+}
+.verdict-abnormal-active {
+  background: rgba(229, 101, 42, 0.08);
+  color: #E5652A;
+  border-color: #E5652A;
+}
+.note-input {
+  width: auto;
+  background: #F5F7FA;
+  border-radius: 12rpx;
+  padding: 18rpx 20rpx;
+  font-size: 26rpx;
+  min-height: 60rpx;
+  box-sizing: border-box;
+}
+
+/* 工单草稿 */
+.draft-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  margin: 28rpx 0 8rpx;
+}
+/* P0-4：AI 判别不可采信提示条（黄色） */
+.ai-discard-tip {
+  margin-top: 12rpx;
+  background: rgba(230, 162, 60, 0.10);
+  border: 2rpx solid #E6A23C;
+  border-radius: 12rpx;
+  color: #B26A00;
+  font-size: 24rpx;
+  padding: 16rpx 20rpx;
+}
+.draft-label {
+  font-size: 24rpx;
+  color: #5B6B7D;
+  margin: 16rpx 0 8rpx;
+}
+.draft-input {
+  width: auto;
+  background: #F5F7FA;
+  border-radius: 12rpx;
+  padding: 18rpx 20rpx;
+  font-size: 26rpx;
+  min-height: 72rpx;
+  box-sizing: border-box;
+}
+
+/* 责任人分组单选 */
+.assignee-group {
+  margin-top: 12rpx;
+}
+.group-header {
+  font-size: 24rpx;
+  margin: 12rpx 0;
+}
+.assignee-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx;
+  border: 2rpx solid #EEF1F5;
+  border-radius: 12rpx;
+  margin-bottom: 12rpx;
+}
+.assignee-name {
+  font-size: 28rpx;
+  color: #1A2634;
+}
+.assignee-count {
+  font-size: 22rpx;
+}
+.assignee-active {
+  border-color: #1E5FD0;
+  background: rgba(30, 95, 208, 0.05);
+}
+
+/* 提交 */
+.submit-btn {
+  margin-top: 10rpx;
+}
+.submit-btn[disabled] {
+  background: #C6D3E8;
+  color: #ffffff;
+}
+
+/* 现场位置输入 */
+.location-input {
+  width: 100%;
+  box-sizing: border-box;
+  background: #F5F7FA;
+  border-radius: 12rpx;
+  padding: 18rpx 20rpx;
+  font-size: 26rpx;
+  min-height: 120rpx;
+  line-height: 1.6;
+}
+
+/* 本地草稿卡片 */
+.draft-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.draft-card-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #1A2634;
+}
+.draft-card-tip {
+  margin-top: 12rpx;
+  font-size: 24rpx;
+}
+.draft-photo-row {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12rpx;
+  padding: 12rpx 16rpx;
+  background: #FAFBFC;
+  border-radius: 8rpx;
+  font-size: 24rpx;
+  color: #1A2634;
+}
+.draft-card-actions {
+  margin-top: 20rpx;
+  display: flex;
+  gap: 16rpx;
+}
+.draft-btn {
+  flex: 1;
+  font-size: 26rpx;
+  padding: 12rpx 0;
+}
+.draft-job-stage {
+  margin-top: 12rpx;
+  font-size: 24rpx;
+}
+
+/* 直接人工巡查按钮 */
+.manual-btn {
+  margin-bottom: 20rpx;
+}
+
+/* 分析遮罩 */
+.overlay {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(26, 38, 52, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+.overlay-box {
+  background: #ffffff;
+  border-radius: 16rpx;
+  padding: 48rpx 64rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24rpx;
+}
+.overlay-text {
+  font-size: 28rpx;
+  color: #1A2634;
+}
+.overlay-loading {
+  width: 56rpx;
+  height: 56rpx;
+  border: 6rpx solid #E5EAF1;
+  border-top-color: #1E5FD0;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

@@ -1,0 +1,81 @@
+/* 我的页样式 */
+.page-wrap {
+  padding: 24rpx 24rpx 40rpx;
+}
+
+/* 用户信息卡 */
+.user-card {
+  padding: 40rpx 32rpx;
+}
+.user-name {
+  font-size: 40rpx;
+  font-weight: 700;
+  color: #1A2634;
+}
+.user-meta {
+  margin-top: 16rpx;
+  display: flex;
+  gap: 12rpx;
+}
+.user-project {
+  margin-top: 16rpx;
+  font-size: 26rpx;
+}
+
+/* 功能列表 cell */
+.cell-group {
+  padding: 0;
+  overflow: hidden;
+}
+.cell {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30rpx 32rpx;
+  border-bottom: 1rpx solid #F0F2F5;
+}
+.cell:last-child {
+  border-bottom: none;
+}
+.cell-label {
+  font-size: 28rpx;
+  color: #1A2634;
+}
+.cell-value {
+  font-size: 26rpx;
+}
+.cell-value-ok {
+  color: #2E7D3A;
+}
+.cell-value-warn {
+  color: #E6A23C;
+}
+.cell-arrow {
+  font-size: 36rpx;
+  color: #C4CDD8;
+  transition: transform 0.2s;
+}
+.cell-arrow-open {
+  transform: rotate(90deg);
+}
+
+/* AI 功能说明展开区 */
+.ai-desc {
+  padding: 8rpx 32rpx 28rpx;
+  background: #F5F7FA;
+  border-bottom: 1rpx solid #F0F2F5;
+}
+.ai-desc-title {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: #1A2634;
+  margin: 20rpx 0 8rpx;
+}
+.ai-desc-text {
+  font-size: 24rpx;
+  color: #5B6B7D;
+  line-height: 1.7;
+}
+.ai-disclaimer {
+  color: #E6A23C;
+}

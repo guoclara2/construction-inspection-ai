@@ -1,0 +1,76 @@
+<view class="page-wrap" wx:if="{{record}}">
+  <view class="card" wx:if="{{locationText || photos.length}}">
+    <view wx:if="{{locationText}}" class="section-label">现场位置</view>
+    <view wx:if="{{locationText}}" class="location-text">{{locationText}}</view>
+    <view wx:if="{{photos.length}}" class="thumb-row">
+      <image wx:for="{{photos}}" wx:key="id" src="{{item.signedUrl}}" class="thumb" mode="aspectFill" bindtap="previewAll" />
+    </view>
+  </view>
+
+  <!-- 检查项快照 -->
+  <view class="card">
+    <view class="section-label">检查项</view>
+    <view class="item-name">{{record.item_name}}</view>
+    <view class="item-basis muted">{{record.item_basis}}</view>
+    <view class="item-tags">
+      <view class="tag tag-primary">{{categoryLabel}}</view>
+    </view>
+  </view>
+
+  <!-- 现场照片 -->
+  <view class="card" wx:if="{{photoFull}}">
+    <view class="section-label">现场照片</view>
+    <image class="photo" src="{{photoFull}}" mode="widthFix" bindtap="previewPhoto" />
+    <view wx:if="{{photoMeta}}" class="evidence-line">
+      <view wx:if="{{photoMeta.suspicious}}" class="tag tag-danger">存证异常</view>
+      <text class="muted">拍摄：{{photoMeta.exifTime}}｜{{photoMeta.coord}}｜{{photoMeta.sourceLabel}}</text>
+    </view>
+  </view>
+
+  <!-- AI 判别结果 -->
+  <view class="card ai-card" wx:if="{{aiDisplay}}">
+    <view class="section-label">AI 判别结果</view>
+    <view wx:if="{{aiMode === 'mock'}}" class="ai-badge">AI 演示模式</view>
+    <view class="ai-verdict ai-{{aiDisplay.verdictClass}}">{{aiDisplay.verdictText}}</view>
+    <view class="ai-row">
+      <view class="tag" style="color:{{aiDisplay.severityColor}};border:1rpx solid {{aiDisplay.severityColor}}">{{aiDisplay.severity}}</view>
+      <view class="ai-confidence ai-conf-{{aiDisplay.confidenceClass}}">置信度 {{aiDisplay.confidencePct}}%</view>
+      <view wx:if="{{aiDisplay.confidenceHint}}" class="ai-confidence-hint">{{aiDisplay.confidenceHint}}</view>
+    </view>
+    <view class="ai-block">
+      <view class="ai-label">异常描述</view>
+      <view class="ai-text">{{aiDisplay.defect_desc}}</view>
+    </view>
+    <view class="ai-block">
+      <view class="ai-label">规范依据</view>
+      <view class="ai-quote">{{aiDisplay.basis}}</view>
+    </view>
+    <view class="ai-block">
+      <view class="ai-label">处置建议</view>
+      <view class="ai-text">{{aiDisplay.suggestion}}</view>
+    </view>
+    <view class="ai-footer">AI 结论仅供参考，不构成最终判定</view>
+  </view>
+  <view class="card" wx:elif="{{record.ai_mode === ''}}">
+    <view class="section-label">AI 判别结果</view>
+    <view class="muted">未进行 AI 判别</view>
+  </view>
+
+  <!-- 人工确认 -->
+  <view class="card">
+    <view class="section-label">人工确认</view>
+    <view class="human-row">
+      <view class="tag {{verdictClass}}">{{verdictLabel}}</view>
+      <view class="muted human-meta">{{record.inspector_name}} · {{record.created_at}}</view>
+    </view>
+    <view wx:if="{{record.note}}" class="note-text">{{record.note}}</view>
+  </view>
+
+  <!-- 关联工单 -->
+  <view class="card related-card" wx:if="{{relatedOrder}}" bindtap="goOrder">
+    <view class="related-row">
+      <view class="related-text">关联工单 {{relatedOrder.order_no}} · 第 {{relatedOrder.round}} 轮</view>
+      <view class="tag" style="color:{{relatedStatusColor}};border:1rpx solid {{relatedStatusColor}}">{{relatedStatusLabel}}</view>
+    </view>
+  </view>
+</view>

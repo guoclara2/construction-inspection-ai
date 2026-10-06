@@ -1,0 +1,75 @@
+/* 工单中心页样式 */
+.page-wrap {
+  padding: 24rpx 24rpx 40rpx;
+}
+
+/* 角色自适应 tab 条 */
+.tab-bar {
+  display: flex;
+  background: #ffffff;
+  border-radius: 12rpx;
+  padding: 8rpx;
+  margin-bottom: 20rpx;
+}
+.tab {
+  flex: 1;
+  text-align: center;
+  padding: 16rpx 0;
+  font-size: 28rpx;
+  color: #5B6B7D;
+  border-radius: 8rpx;
+}
+.tab-active {
+  background: #1E5FD0;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+  margin-bottom: 20rpx;
+}
+
+/* 工单卡片 */
+.order-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.order-no {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #1A2634;
+}
+.order-status {
+  font-size: 26rpx;
+  font-weight: 600;
+}
+.order-item {
+  margin-top: 12rpx;
+  font-size: 26rpx;
+  color: #1A2634;
+}
+.order-meta {
+  margin-top: 16rpx;
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  flex-wrap: wrap;
+}
+.order-counterpart {
+  font-size: 24rpx;
+}
+.order-foot {
+  margin-top: 12rpx;
+  font-size: 24rpx;
+  text-align: right;
+}
+
+.list-end {
+  text-align: center;
+  font-size: 24rpx;
+  padding: 20rpx 0;
+}

@@ -1,0 +1,48 @@
+/* 自定义 tabBar（按权限过滤 tab）：安全区适配 + 未读红点 */
+.tab-bar {
+  display: flex;
+  background: #FFFFFF;
+  border-top: 1rpx solid #E4E8EE;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.tab-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10rpx 0 6rpx;
+}
+
+.tab-icon-wrap {
+  position: relative;
+  width: 52rpx;
+  height: 52rpx;
+}
+
+.tab-icon {
+  width: 52rpx;
+  height: 52rpx;
+}
+
+.tab-badge {
+  position: absolute;
+  top: -10rpx;
+  left: 32rpx;
+  min-width: 30rpx;
+  height: 30rpx;
+  padding: 0 6rpx;
+  box-sizing: border-box;
+  border-radius: 15rpx;
+  background: #D32F2F;
+  color: #FFFFFF;
+  font-size: 20rpx;
+  line-height: 30rpx;
+  text-align: center;
+}
+
+.tab-text {
+  margin-top: 2rpx;
+  font-size: 20rpx;
+  line-height: 28rpx;
+}

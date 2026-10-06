@@ -1,0 +1,120 @@
+/* 巡查计划与离线草稿页样式 */
+.page-wrap {
+  padding: 24rpx 24rpx 60rpx;
+}
+
+.section-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #1A2634;
+  margin: 28rpx 4rpx 20rpx;
+}
+
+.error-tip {
+  background: #FDF3E7;
+  color: #B26A00;
+  font-size: 24rpx;
+  border-radius: 12rpx;
+  padding: 16rpx 20rpx;
+  margin-bottom: 20rpx;
+}
+
+.empty-draft {
+  text-align: center;
+  padding: 40rpx 0;
+  font-size: 26rpx;
+}
+
+/* 统计概览卡 */
+.stats-card {
+  padding: 28rpx 12rpx;
+}
+.stats-row {
+  display: flex;
+}
+.stat {
+  flex: 1;
+  text-align: center;
+}
+.stat-num {
+  font-size: 40rpx;
+  font-weight: 700;
+  color: #1A2634;
+}
+.stat-warn { color: #E6A23C; }
+.stat-success { color: #2E7D3A; }
+.stat-info { color: #1E5FD0; }
+.stat-label {
+  margin-top: 6rpx;
+  font-size: 24rpx;
+  color: #5B6B7D;
+}
+
+/* 本地草稿卡 */
+.draft-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.draft-name {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #1A2634;
+  flex: 1;
+  margin-right: 16rpx;
+}
+.draft-time {
+  font-size: 22rpx;
+  white-space: nowrap;
+}
+.draft-meta {
+  margin-top: 12rpx;
+  font-size: 24rpx;
+}
+.draft-actions {
+  margin-top: 20rpx;
+  display: flex;
+  gap: 16rpx;
+}
+.draft-btn {
+  flex: 1;
+  font-size: 26rpx;
+  padding: 12rpx 0;
+}
+.draft-btn-danger {
+  flex: 1;
+  font-size: 26rpx;
+  padding: 12rpx 0;
+  background: rgba(229, 101, 42, 0.08);
+  color: #E5652A;
+  border: 1rpx solid #E5652A;
+  border-radius: 12rpx;
+  text-align: center;
+}
+.draft-btn-danger::after { border: none; }
+
+/* 巡查任务卡 */
+.task-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.task-name {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #1A2634;
+  flex: 1;
+  margin-right: 16rpx;
+}
+.task-meta {
+  margin-top: 12rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+  font-size: 24rpx;
+}
+.task-btn {
+  margin-top: 20rpx;
+  font-size: 28rpx;
+  padding: 16rpx 0;
+}
