@@ -64,8 +64,11 @@ def exif_jpeg() -> bytes:
 def _upload(client, headers, data: bytes, name="shot.jpg", **form):
     form.setdefault("biz_type", "record")
     form.setdefault("source", "camera")
+    # 按扩展名声明具体 MIME（与真实前端一致）；magic bytes 仍是最终判定。
+    ext = name.rsplit(".", 1)[-1].lower() if "." in name else ""
+    mime = "image/png" if ext == "png" else "image/jpeg"
     return client.post("/api/attachments", data=form,
-                       files={"file": (name, data, "application/octet-stream")}, headers=headers)
+                       files={"file": (name, data, mime)}, headers=headers)
 
 
 def _upload_ok(client, headers, data: bytes, name="shot.jpg", **form) -> dict:
